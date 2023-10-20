@@ -31,7 +31,7 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"], input[type="submit"] {
+input[type="text"], input[type="date"], input[type="time"], input[type="submit"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -106,4 +106,47 @@ a:hover {
 
 .btn:hover {
     background-color: #2980b9;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+    .container {
+        margin: 20px 10px;
+    }
+}
+/* ... (existing styles) ... */
+.post-item {
+    border: 2px solid #ddd;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+/* ... (existing styles) ... */
+.facebook-post {
+    border-color: lightgreen;
+}
+
+.instagram-post {
+    border-color: lightblue;
+}
+/* ... (existing styles) ... */
+.comment-tooltip {
+    visibility: hidden;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.comment:hover .comment-tooltip {
+    visibility: visible;
+    opacity: 1;
 }

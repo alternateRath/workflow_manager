@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agenda de Postagens</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Agenda de Postagens</h1>
+        <div class="box">
+            <table>
+                <tr>
+                    <th>Data/Hora</th>
+                    <th>Plataforma</th>
+                    <th>Link</th>
+                    <th>Legenda</th>
+                    <th>Comentários</th>
+                </tr>
+                {% for data_hora, postagens in agenda.items() %}
+                <tr>
+                    <td><strong>{{ data_hora }}</strong></td>
+                    <td>
+                        <ul>
+                            {% for postagem in postagens %}
+                            <li>{{ postagem.plataforma }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            {% for postagem in postagens %}
+                            <li><a href="{{ postagem.link }}" target="_blank">{{ postagem.link }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            {% for postagem in postagens %}
+                            <li>{{ postagem.legenda }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            {% for postagem in postagens %}
+                            <li>{{ postagem.comentarios|join(", ") }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <a href="{{ url_for('index') }}" class="btn">Voltar para o Início</a>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -4,7 +4,16 @@ document.addEventListener("DOMContentLoaded", function() {
     postForm.addEventListener("submit", function(e) {
         e.preventDefault();
 
+        let date = document.getElementById("date").value;
+        let time = document.getElementById("time").value;
+
+        if (!document.getElementById("link").value || !date || !time) {
+            alert("Please fill out all fields correctly!");
+            return;
+        }
+
         const formData = new FormData(postForm);
+        formData.append("data_hora", date + " " + time);
 
         fetch("/", {
             method: "POST",
