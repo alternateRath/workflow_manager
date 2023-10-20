@@ -5,20 +5,23 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Workflow Manager</h1>
-    <form id="postForm" method="POST">
-        <label for="link">Link da mídia:</label>
-        <input type="text" id="link" name="link" required><br><br>
-
-        <!-- Adicione campos para as outras informações aqui -->
-        <label for="data_hora">Data e Hora (YYYY-MM-DD HH:MM):</label>
-        <input type="text" id="data_hora" name="data_hora" required><br><br>
-
-        <input type="submit" value="Agendar Postagem">
-    </form>
-
-    <a href="{{ url_for('agenda_page') }}">Ver Agenda</a>
-
+    <div class="container">
+        <h1>Workflow Manager</h1>
+        <div class="box">
+            <form id="postForm" method="POST">
+                <div class="input-group">
+                    <label for="link">Link da mídia:</label>
+                    <input type="text" id="link" name="link" required>
+                </div>
+                <div class="input-group">
+                    <label for="data_hora">Data e Hora (YYYY-MM-DD HH:MM):</label>
+                    <input type="text" id="data_hora" name="data_hora" required>
+                </div>
+                <input type="submit" value="Agendar Postagem">
+            </form>
+        </div>
+        <a href="{{ url_for('agenda_page') }}" class="btn">Ver Agenda</a>
+    </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

@@ -3,12 +3,12 @@ from flask import Flask, render_template, request, redirect, url_for
 app = Flask(__name__)
 
 class Post:
-    def __init__(self, link, legenda, horario, comentarios, plataformas):
+    def __init__(self, link, legenda, horario, comentarios=None, plataformas=None):
         self.link = link
         self.legenda = legenda
         self.horario = horario
-        self.comentarios = comentarios
-        self.plataformas = plataformas
+        self.comentarios = comentarios or []
+        self.plataformas = plataformas or []
 
 agenda = {}
 
@@ -16,14 +16,15 @@ agenda = {}
 def index():
     if request.method == "POST":
         link = request.form.get("link")
-        # Obtenha os outros campos de entrada e crie um objeto Post
-        postagem = Post(link, /* outras informações aqui */)
+        legenda = request.form.get("legenda")
+        horario = request.form.get("horario")
+        comentarios = request.form.getlist("comentarios")
+        plataformas = request.form.getlist("plataformas")
 
-        data_hora = request.form.get("data_hora")
-        if data_hora:
-            if data_hora not in agenda:
-                agenda[data_hora] = []
-            agenda[data_hora].append(postagem)
+        postagem = Post(link, legenda, horario, comentarios, plataformas)
+
+        if horario:
+            agenda.setdefault(horario, []).append(postagem)
 
     return render_template("index.html", agenda=agenda)
 

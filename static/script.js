@@ -4,26 +4,20 @@ document.addEventListener("DOMContentLoaded", function() {
     postForm.addEventListener("submit", function(e) {
         e.preventDefault();
 
-        const link = document.getElementById("link").value;
-        // Obtenha os outros campos de entrada e crie um objeto Post
+        const formData = new FormData(postForm);
 
-        const dataHora = document.getElementById("data_hora").value;
-        if (dataHora) {
-            fetch("/", {
-                method: "POST",
-                body: new URLSearchParams({ "link": link, "data_hora": dataHora }),
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                }
-            }).then(response => {
-                if (response.ok) {
-                    // Postagem bem-sucedida
-                    window.location.href = "/agenda";
-                } else {
-                    // Trate erros aqui, se necessário
-                    console.error("Erro ao agendar a postagem.");
-                }
-            });
-        }
+        fetch("/", {
+            method: "POST",
+            body: formData,
+        }).then(response => {
+            if (response.ok) {
+                window.location.href = "/agenda";
+            } else {
+                alert("Error scheduling the post. Please try again.");
+            }
+        }).catch(error => {
+            console.error("Fetch error:", error);
+            alert("An error occurred. Please try again.");
+        });
     });
 });
