@@ -1,7 +1,7 @@
 Workflow Manager - Social Media Posting Scheduler
 Introduction
 Workflow Manager is a dynamic web application designed to help content creators, social media managers, and businesses streamline their posting schedule across multiple platforms. Users can easily input post details, set times for posting, and view a sorted agenda of scheduled posts. This project integrates with platforms like Facebook, Instagram, YouTube, and TikTok.
-
+/n
 Features
 Dynamic Post Scheduling: Quickly set up new posts with media links, captions, and comments.
 Multi-platform Integration: Choose from a variety of platforms including Facebook, Instagram, YouTube, and TikTok for each post.
