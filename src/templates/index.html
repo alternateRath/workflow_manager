@@ -78,35 +78,5 @@
         <a href="{{ url_for('agenda_page') }}" class="btn">Ver Agenda</a>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var el = document.getElementById('scheduledPosts');
-            var sortable = Sortable.create(el, {
-                onEnd: function (evt) {
-                    var itemEl = evt.item;  // dragged HTMLElement
-                    var order = sortable.toArray();
-                    updateOrder(order);
-                },
-            });
-
-            function updateOrder(newOrder) {
-                fetch('/update_order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    body: JSON.stringify({ new_order: newOrder }),
-                })
-                .then(response => response.text())
-                .then(data => {
-                    console.log('Order updated:', data);
-                })
-                .catch((error) => {
-                    console.error('Error updating order:', error);
-                });
-            }
-        });
-    </script>
 </body>
 </html>
