@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workflow Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Workflow Manager</h1>
+        <div class="box">
+            <form id="postForm" method="POST">
+                <div class="input-group">
+                    <label for="link">Link da mídia:</label>
+                    <input type="text" id="link" name="link" required>
+                </div>
+                <div class="input-group">
+                    <label for="legenda">Legenda:</label>
+                    <textarea id="legenda" name="legenda" rows="4" cols="50" required></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="comentarios">Comentários:</label>
+                    <textarea id="comentarios" name="comentarios" rows="4" cols="50"></textarea>
+                </div>
+                <div class="input-group" id="platforms">
+                    <label>Plataformas:</label>
+                    <div class="platform-option">
+                        <input type="checkbox" id="facebook" name="plataforma" value="Facebook">
+                        <label for="facebook"><i class="fab fa-facebook"></i> Facebook</label>
+                    </div>
+                    <div class="platform-option">
+                        <input type="checkbox" id="instagram" name="plataforma" value="Instagram">
+                        <label for="instagram"><i class="fab fa-instagram"></i> Instagram</label>
+                    </div>
+                    <div class="platform-option">
+                        <input type="checkbox" id="youtube" name="plataforma" value="Youtube">
+                        <label for="youtube"><i class="fab fa-youtube"></i> Youtube</label>
+                    </div>
+                    <div class="platform-option">
+                        <input type="checkbox" id="tiktok" name="plataforma" value="Tiktok">
+                        <label for="tiktok"><i class="fab fa-tiktok"></i> Tiktok</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="date">Data:</label>
+                    <input type="date" id="date" name="date" min="{{ today }}" max="{{ one_week_from_today }}" required>
+                </div>
+                <div class="input-group">
+                    <label for="time">Time:</label>
+                    <select id="time" name="time">
+                        {% for h in range(24) %}
+                            {% for m in [0, 15, 30, 45] %}
+                                <option value="{{ '%02d' % h }}:{{ '%02d' % m }}">{{ '%02d' % h }}:{{ '%02d' % m }}</option>
+                            {% endfor %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <input type="submit" value="Agendar Postagem">
+            </form>
+        </div>
+        <a href="{{ url_for('agenda_page') }}" class="btn">Ver Agenda</a>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
