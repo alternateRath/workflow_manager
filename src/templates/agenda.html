@@ -7,54 +7,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Agenda de Postagens</h1>
-        <div class="box">
-            <table>
-                <tr>
-                    <th>Data/Hora</th>
-                    <th>Plataforma</th>
-                    <th>Link</th>
-                    <th>Legenda</th>
-                    <th>Comentários</th>
-                </tr>
-                {% for data_hora, postagens in agenda.items() %}
-                <tr>
-                    <td><strong>{{ data_hora }}</strong></td>
-                    <td>
-                        <ul>
-                            {% for postagem in postagens %}
-                            <li>{{ postagem.plataforma }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                    <td>
-                        <ul>
-                            {% for postagem in postagens %}
-                            <li><a href="{{ postagem.link }}" target="_blank">{{ postagem.link }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                    <td>
-                        <ul>
-                            {% for postagem in postagens %}
-                            <li>{{ postagem.legenda }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                    <td>
-                        <ul>
-                            {% for postagem in postagens %}
-                            <li>{{ postagem.comentarios|join(", ") }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <a href="{{ url_for('index') }}" class="btn">Voltar para o Início</a>
+<div class="container">
+    <h1>Agenda de Postagens</h1>
+    <div class="card-container">
+        {% for data_hora, postagens in agenda.items() %}
+            {% for postagem in postagens %}
+                <!-- Adjusting the class to handle a list of platforms -->
+                <div class="post-card {% for plataforma in postagem.plataforma %}{{ plataforma|lower }} {% endfor %}">
+                    <!-- Formatting the date and time properly -->
+                    <h3>{{ data_hora|datetimeformat }}</h3>
+                    <p><strong>Plataforma:</strong> {{ postagem.plataforma|join(", ") }}</p>
+                    <p><strong>Link:</strong> <a href="{{ postagem.link }}" target="_blank">{{ postagem.link }}</a></p>
+                    <p><strong>Legenda:</strong> {{ postagem.legenda }}</p>
+                    <!-- Checking if comments exist before trying to join them -->
+                    {% if postagem.comentarios %}
+                        <p><strong>Comentários:</strong> {{ postagem.comentarios|join(", ") }}</p>
+                    {% else %}
+                        <p><strong>Comentários:</strong> None</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endfor %}
     </div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <a href="{{ url_for('index') }}" class="btn">Voltar para o Início</a>
+</div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
