@@ -14,6 +14,8 @@
         {% for post in posts %}
             <div class="post-card {% for plataforma in post.plataforma.split(',') %}{{ plataforma|lower }} {% endfor %}" data-id="{{ post.id }}">
                 <h3>{{ post.date }} {{ post.time.strftime('%H:%M') }}</h3>
+                <button class="btn-edit" data-id="{{ post.id }}">Edit</button>
+                <button class="btn-delete" data-id="{{ post.id }}">Delete</button>
                 <p><strong>Plataforma:</strong> {{ post.plataforma }}</p>
                 <p><strong>Link:</strong> <a href="{{ post.link }}" target="_blank">{{ post.link }}</a></p>
                 <p><strong>Legenda:</strong> {{ post.legenda }}</p>

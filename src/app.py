@@ -58,6 +58,28 @@ def index():
     except Exception as e:
         return str(e), 500
 
+@app.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if request.method == 'POST':
+        post.link = request.form.get("link")
+        post.date = datetime.strptime(request.form.get("date"), "%Y-%m-%d").date()
+        post.time = datetime.strptime(request.form.get("time"), "%H:%M").time()
+        post.legenda = request.form.get("legenda")
+        post.comentarios = request.form.get("comentarios")
+        post.plataforma = ",".join(request.form.getlist("plataforma"))
+
+        db.session.commit()
+        return redirect(url_for("agenda_page"))
+    return render_template('edit_post.html', post=post)
+
+@app.route('/delete_post/<int:post_id>', methods=['DELETE'])
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    return 'Success', 200
+
 @app.route("/agenda")
 def agenda_page():
     posts = Post.query.order_by(Post.order, Post.date, Post.time).all()
