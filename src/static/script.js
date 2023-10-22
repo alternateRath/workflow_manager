@@ -1,32 +1,43 @@
 document.addEventListener("DOMContentLoaded", function() {
     const postForm = document.getElementById("postForm");
 
-    postForm.addEventListener("submit", function(e) {
-        e.preventDefault();
+    const validateFormData = () => {
+        const link = document.getElementById("link").value;
+        const date = document.getElementById("date").value;
+        const time = document.getElementById("time").value;
 
-        let date = document.getElementById("date").value;
-        let time = document.getElementById("time").value;
+        // Check if link, date, and time values are not empty
+        return link && date && time;
+    };
 
-        if (!document.getElementById("link").value || !date || !time) {
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        if (!validateFormData()) {
             alert("Please fill out all fields correctly!");
             return;
         }
 
         const formData = new FormData(postForm);
-        formData.append("data_hora", date + " " + time);
+        const date = document.getElementById("date").value;
+        const time = document.getElementById("time").value;
+        formData.append("data_hora", `${date} ${time}`);
 
         fetch("/", {
             method: "POST",
             body: formData,
-        }).then(response => {
-            if (response.ok) {
-                window.location.href = "/agenda";
-            } else {
-                alert("Error scheduling the post. Please try again.");
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Server responded with an error.");
             }
-        }).catch(error => {
+            window.location.href = "/agenda";
+        })
+        .catch(error => {
             console.error("Fetch error:", error);
             alert("An error occurred. Please try again.");
         });
-    });
+    };
+
+    postForm.addEventListener("submit", handleSubmit);
 });
