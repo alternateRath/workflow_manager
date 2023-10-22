@@ -3,6 +3,7 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
+    font-size: 14px;
 }
 
 .container {
@@ -31,7 +32,10 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"], input[type="date"], input[type="time"], input[type="submit"] {
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="submit"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -108,20 +112,19 @@ a:hover {
     background-color: #2980b9;
 }
 
-/* Responsive */
 @media (max-width: 800px) {
     .container {
         margin: 20px 10px;
     }
 }
-/* ... (existing styles) ... */
+
 .post-item {
     border: 2px solid #ddd;
     margin: 10px 0;
     padding: 10px;
     border-radius: 5px;
 }
-/* ... (existing styles) ... */
+
 .facebook-post {
     border-color: lightgreen;
 }
@@ -129,7 +132,7 @@ a:hover {
 .instagram-post {
     border-color: lightblue;
 }
-/* ... (existing styles) ... */
+
 .comment-tooltip {
     visibility: hidden;
     background-color: #555;
@@ -150,7 +153,7 @@ a:hover {
     visibility: visible;
     opacity: 1;
 }
-/* in style.css */
+
 .comment-content {
     max-height: 0;
     overflow: hidden;
@@ -166,7 +169,6 @@ a:hover {
 .comment-toggle:hover {
     text-decoration: none;
 }
-/* ... existing styles ... */
 
 .card-container {
     display: flex;
@@ -199,7 +201,6 @@ a:hover {
     border-left: 5px solid #010101;
 }
 
-/* ... existing styles ... */
 .platform-option {
     display: inline-block;
     margin-right: 10px;
@@ -222,4 +223,125 @@ a:hover {
 
 .fab {
     margin-right: 5px;
+}
+.platform-icons {
+    margin-bottom: inherit
+    }
+
+.edit-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    justify-content: center; /* Centers child elements horizontally */
+    align-items: center;     /* Centers child elements vertically */
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    width: 80%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: absolute;   /* Set position to absolute */
+    top: 50%;             /* Position halfway from the top */
+    left: 50%;            /* Position halfway from the left */
+    transform: translate(-50%, -50%);  /* Adjusts the element's own dimensions to center */
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+
+.modal-content label,
+.modal-content input,
+.modal-content textarea {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.platform-icon {
+    font-size: 24px;
+    margin: 0 10px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.platform-icon.selected {
+    opacity: 1;
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.close-button:hover {
+    color: #d9534f;
+}
+
+:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    border-radius: 5px;
+    z-index: 1050;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    display: none;
+}
+
+.notification.success {
+    background-color: #28a745;
+}
+
+.notification.error {
+    background-color: #dc3545;
+}
+
+.notification.show {
+    display: block;
+}
+
+.modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 16px;
+    }
+
+    h1, h2, h3, h4, h5 {
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 600px) {
+    .notification {
+        left: 10px;
+        right: 10px;
+        transform: none;
+        width: auto;
+    }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Agenda de Postagens</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,57 +8,62 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 </head>
-<body>
-<div class="container">
-    <h1>Agenda de Postagens</h1>
-    <div class="card-container" id="postsList">
-        {% for post in posts %}
-            <div class="post-card {% for plataforma in post.plataforma.split(',') %}{{ plataforma|lower }} {% endfor %}" data-id="{{ post.id }}">
-                <h3>{{ post.date }} {{ post.time.strftime('%H:%M') }}</h3>
-                <button class="btn-edit" data-id="{{ post.id }}">Edit</button>
-                <button class="btn-delete" data-id="{{ post.id }}">Delete</button>
-                <p><strong>Plataforma:</strong> {{ post.plataforma }}</p>
-                <p><strong>Link:</strong> <a href="{{ post.link }}" target="_blank">{{ post.link }}</a></p>
-                <p><strong>Legenda:</strong> {{ post.legenda }}</p>
-                {% if post.comentarios %}
-                    <p><strong>Comentários:</strong> {{ post.comentarios }}</p>
-                {% else %}
-                    <p><strong>Comentários:</strong> None</p>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
-    <a href="{{ url_for('index') }}" class="btn">Voltar para o Início</a>
-</div>
-<script src="{{ url_for('static', filename='script.js') }}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var el = document.getElementById('postsList');
-        var sortable = Sortable.create(el, {
-            onEnd: function (evt) {
-                var order = sortable.toArray();
-                updateOrder(order);
-            },
-        });
 
-        function updateOrder(newOrder) {
-            fetch('/update_order', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({ new_order: newOrder }),
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log('Order updated:', data);
-            })
-            .catch((error) => {
-                console.error('Error updating order:', error);
-            });
-        }
-    });
-</script>
+<body>
+    <!-- Modal for editing the post -->
+    <div class="edit-modal" id="editModal">
+        <div class="modal-content">
+            <h2>Edit Post</h2>
+            <form action="#" method="POST"> <!-- JavaScript will change the action dynamically -->
+                <label for="link">Link:</label>
+                <input type="text" name="link" id="link" required><br><br>
+
+                <label for="date">Date:</label>
+                <input type="date" name="date" id="date" required><br><br>
+
+                <label for="time">Time:</label>
+                <input type="time" name="time" id="time" required><br><br>
+
+                <label for="legenda">Legenda:</label>
+                <textarea name="legenda" id="legenda" rows="4"></textarea><br><br>
+
+                <label for="comentarios">Comments:</label>
+                <textarea name="comentarios" id="comentarios" rows="4"></textarea><br><br>
+
+                <label for="plataforma">Platform:</label>
+                <div class="platform-icons">
+                    {% for platform, icon in [('Facebook', 'fa-facebook-f'), ('Instagram', 'fa-instagram'), ('Youtube', 'fa-youtube'), ('TikTok', 'fa-tiktok')] %}
+                        <i class="fab {{ icon }} platform-icon" data-platform="{{ platform }}" onclick="togglePlatformSelection(this)"></i>
+                    {% endfor %}
+                    <input type="hidden" name="plataforma" id="plataforma">
+                </div>
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
+    <!-- Main content of the page -->
+    <div class="container">
+        <h1>Agenda de Postagens</h1>
+        <div class="card-container" id="postsList">
+            {% for post in posts %}
+                <div class="post-card {% for plataforma in post.plataforma.split(',') %}{{ plataforma|lower }} {% endfor %}" data-id="{{ post.id }}">
+                    <h3>{{ post.date }} {{ post.time.strftime('%H:%M') }}</h3>
+                    <button class="btn-edit" data-id="{{ post.id }}">Edit</button>
+                    <button class="btn-delete" data-id="{{ post.id }}">Delete</button>
+                    <p><strong>Plataforma:</strong> {{ post.plataforma }}</p>
+                    <p><strong>Link:</strong> <a href="{{ post.link }}" target="_blank">{{ post.link }}</a></p>
+                    <p><strong>Legenda:</strong> {{ post.legenda }}</p>
+                    {% if post.comentarios %}
+                        <p><strong>Comentários:</strong> {{ post.comentarios }}</p>
+                    {% else %}
+                        <p><strong>Comentários:</strong> None</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <a href="{{ url_for('index') }}" class="btn">Voltar para o Início</a>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>
