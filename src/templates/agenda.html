@@ -5,32 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
 </head>
 <body>
 <div class="container">
     <h1>Agenda de Postagens</h1>
-    <div class="card-container">
-        {% for data_hora, postagens in agenda.items() %}
-            {% for postagem in postagens %}
-                <!-- Adjusting the class to handle a list of platforms -->
-                <div class="post-card {% for plataforma in postagem.plataforma %}{{ plataforma|lower }} {% endfor %}">
-                    <!-- Formatting the date and time properly -->
-                    <h3>{{ data_hora|datetimeformat }}</h3>
-                    <p><strong>Plataforma:</strong> {{ postagem.plataforma|join(", ") }}</p>
-                    <p><strong>Link:</strong> <a href="{{ postagem.link }}" target="_blank">{{ postagem.link }}</a></p>
-                    <p><strong>Legenda:</strong> {{ postagem.legenda }}</p>
-                    <!-- Checking if comments exist before trying to join them -->
-                    {% if postagem.comentarios %}
-                        <p><strong>Comentários:</strong> {{ postagem.comentarios|join(", ") }}</p>
-                    {% else %}
-                        <p><strong>Comentários:</strong> None</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
+    <div class="card-container" id="postsList">
+        {% for post in posts %}
+            <div class="post-card {% for plataforma in post.plataforma.split(',') %}{{ plataforma|lower }} {% endfor %}" data-id="{{ post.id }}">
+                <h3>{{ post.date }} {{ post.time.strftime('%H:%M') }}</h3>
+                <p><strong>Plataforma:</strong> {{ post.plataforma }}</p>
+                <p><strong>Link:</strong> <a href="{{ post.link }}" target="_blank">{{ post.link }}</a></p>
+                <p><strong>Legenda:</strong> {{ post.legenda }}</p>
+                {% if post.comentarios %}
+                    <p><strong>Comentários:</strong> {{ post.comentarios }}</p>
+                {% else %}
+                    <p><strong>Comentários:</strong> None</p>
+                {% endif %}
+            </div>
         {% endfor %}
     </div>
     <a href="{{ url_for('index') }}" class="btn">Voltar para o Início</a>
 </div>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var el = document.getElementById('postsList');
+        var sortable = Sortable.create(el, {
+            onEnd: function (evt) {
+                var order = sortable.toArray();
+                updateOrder(order);
+            },
+        });
+
+        function updateOrder(newOrder) {
+            fetch('/update_order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ new_order: newOrder }),
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Order updated:', data);
+            })
+            .catch((error) => {
+                console.error('Error updating order:', error);
+            });
+        }
+    });
+</script>
 </body>
 </html>
